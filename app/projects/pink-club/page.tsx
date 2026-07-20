@@ -31,8 +31,8 @@ export default async function PinkClubCase() {
           <Container>
             <Link className="back-link" href="/#projects">← {copy.back}</Link>
             <div className="case-hero__grid">
-              <div><Badge>{copy.badge}</Badge><h1>PINK<br /><em>CLUB</em></h1><p>{copy.intro}</p><div className="tag-list"><span>Telegram Bot</span><span>Mini App</span><span>Backend</span><span>Admin Panel</span></div></div>
-              <ProjectVisual tone="pink" title="PINK CLUB" image={project.image} imageAlt={project.imageAlt} priority />
+              <div><Badge>{copy.badge}</Badge><h1>PINK<br /><em>CLUB</em></h1><p>{copy.intro}</p><div className="tag-list"><span>Telegram Bot</span><span>Database</span><span>Payments</span><span>Admin Panel</span></div><a className="case-bot-link" href="https://t.me/pinkclubgo_bot" target="_blank" rel="noreferrer">{copy.openBot} <span aria-hidden="true">↗</span></a></div>
+              <ProjectVisual tone="pink" title="PINK CLUB" image={project.image} imageAlt={project.imageAlt} visualStatus={project.visualStatus} visualLabels={project.visualLabels} priority />
             </div>
           </Container>
         </section>
@@ -52,6 +52,13 @@ export default async function PinkClubCase() {
           <Container>
             <Reveal><div className="case-section-title"><span>{copy.solutionLabel}</span><h2>{copy.solutionTitle}</h2></div></Reveal>
             <div className="case-functions__grid">{copy.functions.map(([title, text], index) => <Reveal key={title}><article><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p></article></Reveal>)}</div>
+          </Container>
+        </section>
+
+        <section className="case-admin">
+          <Container>
+            <Reveal><div className="case-admin__head"><span>{copy.adminLabel}</span><h2>{copy.adminTitle}</h2><p>{copy.adminText}</p></div></Reveal>
+            <div className="case-admin__grid">{copy.adminTools.map(([title, text], index) => <Reveal key={title}><article><span>{String(index + 1).padStart(2, "0")}</span><div><h3>{title}</h3><p>{text}</p></div></article></Reveal>)}</div>
           </Container>
         </section>
 
