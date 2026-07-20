@@ -21,7 +21,7 @@ export function Hero() {
         <SystemVisual />
         <div className="hero__rail" aria-label="Направления работы">
           <span>WEB / TELEGRAM / AI / AUTOMATION</span>
-          <span>МОСКВА · РАБОТАЮ УДАЛЁННО</span>
+          <span>GERMANY · РАБОТАЮ УДАЛЁННО</span>
         </div>
       </Container>
     </section>
