@@ -2,10 +2,10 @@ import { Badge } from "./Badge";
 import { ProjectVisual } from "./ProjectVisual";
 
 type ProjectCardProps = {
-  kind: string; title: string; eyeline: string; description: string; tags: readonly string[]; href: string; externalUrl: string; status: string; tone: string; image: string; imageAlt: string; visualStatus: string; visualLabels: readonly string[]; openCase: string; discuss: string; featured?: boolean;
+  kind: string; title: string; eyeline: string; description: string; tags: readonly string[]; href: string; externalUrl: string; status: string; tone: string; imageAlt: string; visualStatus: string; visualLabels: readonly string[]; openCase: string; discuss: string; featured?: boolean;
 };
 
-export function ProjectCard({ kind, title, eyeline, description, tags, href, externalUrl, status, tone, image, imageAlt, visualStatus, visualLabels, openCase, discuss, featured = false }: ProjectCardProps) {
+export function ProjectCard({ kind, title, eyeline, description, tags, href, externalUrl, status, tone, imageAlt, visualStatus, visualLabels, openCase, discuss, featured = false }: ProjectCardProps) {
   const titleClass = title.length > 18 ? " project-card--long-title" : "";
 
   return (
@@ -20,7 +20,7 @@ export function ProjectCard({ kind, title, eyeline, description, tags, href, ext
         <div className="tag-list">{tags.map(tag => <span key={tag}>{tag}</span>)}</div>
         <a className="project-card__link" href={href}>{featured ? openCase : discuss}<span aria-hidden="true">↗</span></a>
       </div>
-      <ProjectVisual tone={tone} title={title} image={image} imageAlt={imageAlt} visualStatus={visualStatus} visualLabels={visualLabels} />
+      <ProjectVisual tone={tone} title={title} imageAlt={imageAlt} visualStatus={visualStatus} visualLabels={visualLabels} />
     </article>
   );
 }

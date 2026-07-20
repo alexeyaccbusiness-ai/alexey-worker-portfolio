@@ -37,7 +37,7 @@ export default async function Home() {
           <Container>
             <Reveal><SectionHeader eyebrow={t.projects.eyebrow} title={t.projects.title} text={t.projects.text} /></Reveal>
             <div className="projects-grid">
-              {t.projects.items.map((project, index) => <Reveal key={project.title}><ProjectCard {...project} openCase={t.projects.openCase} discuss={t.projects.discuss} featured={index === 0} /></Reveal>)}
+              {t.projects.items.map((project) => <Reveal key={project.title}><ProjectCard {...project} openCase={t.projects.openCase} discuss={t.projects.discuss} featured /></Reveal>)}
             </div>
             <Reveal><CaseStudyPreview copy={t.journey} /></Reveal>
           </Container>
