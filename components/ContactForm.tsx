@@ -2,7 +2,19 @@
 
 import { useState, type FormEvent } from "react";
 
-export function ContactForm() {
+type ContactFormProps = {
+  copy: {
+    nameLabel: string; namePlaceholder: string; contactLabel: string; contactPlaceholder: string;
+    taskLabel: string; taskPlaceholder: string; privacy: string; submit: string; status: string;
+    fallback: string; messageTitle: string; messageName: string; messageContact: string; messageTask: string;
+    directTitle: string; telegram: string; email: string;
+  };
+};
+
+const TELEGRAM_URL = "https://t.me/AlexWorker7";
+const EMAIL = "alexworker7accbusiness@gmail.com";
+
+export function ContactForm({ copy }: ContactFormProps) {
   const [status, setStatus] = useState("");
   const [fallbackUrl, setFallbackUrl] = useState("");
 
@@ -10,33 +22,32 @@ export function ContactForm() {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
     const message = [
-      "Новая заявка с сайта Alexey Worker",
-      `Имя: ${form.get("name")}`,
-      `Контакт: ${form.get("contact")}`,
-      `Задача: ${form.get("task")}`,
+      copy.messageTitle,
+      `${copy.messageName}: ${form.get("name")}`,
+      `${copy.messageContact}: ${form.get("contact")}`,
+      `${copy.messageTask}: ${form.get("task")}`,
     ].join("\n");
-    const directUrl = process.env.NEXT_PUBLIC_TELEGRAM_URL?.trim();
-    const target = directUrl
-      ? `${directUrl}${directUrl.includes("?") ? "&" : "?"}text=${encodeURIComponent(message)}`
-      : `https://t.me/share/url?url=&text=${encodeURIComponent(message)}`;
+    const directUrl = process.env.NEXT_PUBLIC_TELEGRAM_URL?.trim() || TELEGRAM_URL;
+    const target = `${directUrl}${directUrl.includes("?") ? "&" : "?"}text=${encodeURIComponent(message)}`;
     setFallbackUrl(target);
     window.open(target, "_blank", "noopener,noreferrer");
-    setStatus("Заявка подготовлена — отправьте её в открывшемся Telegram.");
+    setStatus(copy.status);
   }
 
   return (
     <form className="contact-form" onSubmit={handleSubmit}>
       <div className="field-row">
-        <label><span>Как вас зовут</span><input name="name" type="text" placeholder="Имя" autoComplete="name" required /></label>
-        <label><span>Как связаться</span><input name="contact" type="text" placeholder="@telegram или email" autoComplete="email" required /></label>
+        <label><span>{copy.nameLabel}</span><input name="name" type="text" placeholder={copy.namePlaceholder} autoComplete="name" required /></label>
+        <label><span>{copy.contactLabel}</span><input name="contact" type="text" placeholder={copy.contactPlaceholder} autoComplete="email" required /></label>
       </div>
-      <label><span>Коротко о задаче</span><textarea name="task" placeholder="Что должно работать и для кого?" rows={4} required /></label>
+      <label><span>{copy.taskLabel}</span><textarea name="task" placeholder={copy.taskPlaceholder} rows={4} required /></label>
       <div className="contact-form__bottom">
-        <p>Отправляя форму, вы соглашаетесь на обработку указанных данных только для ответа на заявку.</p>
-        <button type="submit">Отправить в Telegram <span aria-hidden="true">↗</span></button>
+        <p>{copy.privacy}</p>
+        <button type="submit">{copy.submit} <span aria-hidden="true">↗</span></button>
       </div>
+      <div className="direct-contacts"><span>{copy.directTitle}</span><div><a href={TELEGRAM_URL} target="_blank" rel="noreferrer">{copy.telegram} · @AlexWorker7 ↗</a><a href={`mailto:${EMAIL}`}>{copy.email} · {EMAIL} ↗</a></div></div>
       <p className="form-status" role="status" aria-live="polite">
-        {status} {fallbackUrl ? <a href={fallbackUrl} target="_blank" rel="noreferrer">Открыть Telegram вручную ↗</a> : null}
+        {status} {fallbackUrl ? <a href={fallbackUrl} target="_blank" rel="noreferrer">{copy.fallback} ↗</a> : null}
       </p>
     </form>
   );

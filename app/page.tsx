@@ -10,45 +10,50 @@ import { ProjectCard } from "@/components/ProjectCard";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ServiceCard } from "@/components/ServiceCard";
-import { benefits, processSteps, projects, services } from "@/lib/content";
+import { getTranslations } from "@/lib/content";
+import { getRequestLocale } from "@/lib/request-locale";
 
-export default function Home() {
+export default async function Home() {
+  const locale = await getRequestLocale();
+  const t = getTranslations(locale);
+
   return (
     <>
-      <Header />
+      <Header locale={locale} copy={t.header} />
       <main>
-        <Hero />
+        <Hero copy={t.hero} />
 
         <section className="section services" id="services">
           <Container>
-            <Reveal><SectionHeader eyebrow="Направления / 06" title="От интерфейса до процессов за ним" text="Проектирую продукт целиком: то, что видит пользователь, и то, что делает систему полезной для бизнеса." /></Reveal>
+            <Reveal><SectionHeader eyebrow={t.services.eyebrow} title={t.services.title} text={t.services.text} /></Reveal>
+            <Reveal className="services-livebar"><span><i />{t.services.liveStatus}</span><small>{t.services.liveHint}</small></Reveal>
             <div className="services-grid">
-              {services.map(service => <Reveal key={service.index}><ServiceCard {...service} /></Reveal>)}
+              {t.services.items.map((service) => <Reveal key={service.index}><ServiceCard {...service} clientGets={t.services.clientGets} exampleLabel={t.services.example} /></Reveal>)}
             </div>
           </Container>
         </section>
 
         <section className="section projects" id="projects">
           <Container>
-            <Reveal><SectionHeader eyebrow="Избранные проекты" title="Системы, собранные вокруг реальной задачи" text="Без вымышленных метрик: показываю логику продукта, состав решения и роль каждого модуля." /></Reveal>
+            <Reveal><SectionHeader eyebrow={t.projects.eyebrow} title={t.projects.title} text={t.projects.text} /></Reveal>
             <div className="projects-grid">
-              {projects.map((project, index) => <Reveal key={project.title}><ProjectCard {...project} featured={index === 0} /></Reveal>)}
+              {t.projects.items.map((project, index) => <Reveal key={project.title}><ProjectCard {...project} openCase={t.projects.openCase} discuss={t.projects.discuss} featured={index === 0} /></Reveal>)}
             </div>
-            <Reveal><CaseStudyPreview /></Reveal>
+            <Reveal><CaseStudyPreview copy={t.journey} /></Reveal>
           </Container>
         </section>
 
         <section className="section process" id="process">
           <Container>
-            <Reveal><SectionHeader eyebrow="Подход к работе" title="От неопределённой идеи до понятного запуска" text="На выходе — не отдельный фрагмент кода, а продуманное решение, которое можно использовать, поддерживать и развивать." /></Reveal>
-            <div className="process-list">{processSteps.map(([title, text], index) => <Reveal key={title}><ProcessStep index={index + 1} title={title} text={text} /></Reveal>)}</div>
+            <Reveal><SectionHeader eyebrow={t.process.eyebrow} title={t.process.title} text={t.process.text} /></Reveal>
+            <div className="process-list">{t.process.steps.map(([title, text], index) => <Reveal key={title}><ProcessStep index={index + 1} title={title} text={text} /></Reveal>)}</div>
           </Container>
         </section>
 
         <section className="section benefits">
           <Container>
-            <Reveal><SectionHeader eyebrow="Почему так" title="Цельная ответственность за результат" /></Reveal>
-            <div className="benefits-grid">{benefits.map(([title, text], index) => <Reveal key={title}><BenefitCard index={index} title={title} text={text} /></Reveal>)}</div>
+            <Reveal><SectionHeader eyebrow={t.benefits.eyebrow} title={t.benefits.title} /></Reveal>
+            <div className="benefits-grid">{t.benefits.items.map(([title, text], index) => <Reveal key={title}><BenefitCard index={index} title={title} text={text} /></Reveal>)}</div>
           </Container>
         </section>
 
@@ -56,7 +61,7 @@ export default function Home() {
           <Container>
             <Reveal className="about-grid">
               <div><span className="about-index">AW / 2026</span><div className="about-portrait" aria-hidden="true"><span>Alexey<br />Worker</span><i /></div></div>
-              <div className="about-copy"><SectionHeader eyebrow="Обо мне" title="Разработчик цифровых решений" /><p className="about-copy__lead">Помогаю превратить бизнес-задачу в систему с понятной логикой, удобным интерфейсом и надёжной технической основой.</p><p>Работаю на стыке проектирования, дизайна и разработки. Поэтому вижу не только отдельный экран или интеграцию, а весь пользовательский путь: от первого действия до данных в панели управления.</p><div className="about-stats"><div><strong>Full-cycle</strong><span>один контекст от идеи до запуска</span></div><div><strong>Product thinking</strong><span>функции связаны с задачей</span></div></div></div>
+              <div className="about-copy"><SectionHeader eyebrow={t.about.eyebrow} title={t.about.title} /><p className="about-copy__lead">{t.about.lead}</p><p>{t.about.body}</p><div className="about-stats"><div><strong>{t.about.statOneTitle}</strong><span>{t.about.statOne}</span></div><div><strong>{t.about.statTwoTitle}</strong><span>{t.about.statTwo}</span></div></div></div>
             </Reveal>
           </Container>
         </section>
@@ -64,13 +69,13 @@ export default function Home() {
         <section className="section contact" id="contact">
           <Container>
             <Reveal className="contact-panel">
-              <div className="contact-panel__head"><span className="contact-kicker">Начать проект / 2026</span><h2>Есть идея или задача, которую пора <em>автоматизировать?</em></h2><p>Опишите, что должно работать. Я помогу превратить это в понятный цифровой продукт.</p></div>
-              <ContactForm />
+              <div className="contact-panel__head"><span className="contact-kicker">{t.contact.kicker}</span><h2>{t.contact.titleStart}<em>{t.contact.titleAccent}</em></h2><p>{t.contact.text}</p></div>
+              <ContactForm copy={t.contact} />
             </Reveal>
           </Container>
         </section>
       </main>
-      <Footer />
+      <Footer copy={t.footer} />
     </>
   );
 }

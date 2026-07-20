@@ -24,7 +24,7 @@ npm start
 Перед публикацией создайте `.env.local` и укажите реальную ссылку Alexey Worker:
 
 ```env
-NEXT_PUBLIC_TELEGRAM_URL=https://t.me/your_username
+NEXT_PUBLIC_TELEGRAM_URL=https://t.me/AlexWorker7
 ```
 
 Без переменной форма использует стандартное окно отправки сообщения Telegram и показывает резервную прямую ссылку. Это сделано намеренно: в проекте нет вымышленного username.

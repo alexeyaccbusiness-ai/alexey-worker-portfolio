@@ -1,10 +1,27 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import type { Locale } from "@/lib/language";
 import { Container } from "./Container";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 import { MobileMenu } from "./MobileMenu";
 
-export function Header() {
+type HeaderProps = {
+  locale: Locale;
+  copy: {
+    navLabel: string;
+    mobileNavLabel: string;
+    nav: readonly (readonly [string, string])[];
+    cta: string;
+    openMenu: string;
+    closeMenu: string;
+    languageLabel: string;
+    switchTo: string;
+  };
+};
+
+export function Header({ locale, copy }: HeaderProps) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -15,19 +32,20 @@ export function Header() {
   return (
     <header className="site-header">
       <Container className="header-inner">
-        <a className="brand" href="#top" aria-label="AW Alexey Worker">
+        <Link className="brand" href="/#top" aria-label="AW Alexey Worker">
           <span className="brand__mark" aria-hidden="true">AW</span>
           <span>Alexey Worker</span>
-        </a>
-        <nav className="desktop-nav" aria-label="Основная навигация">
-          <a href="#services">Услуги</a><a href="#projects">Работы</a><a href="#process">Процесс</a><a href="#about">Обо мне</a>
+        </Link>
+        <nav className="desktop-nav" aria-label={copy.navLabel}>
+          {copy.nav.map(([label, href]) => <Link key={href} href={href}>{label}</Link>)}
         </nav>
-        <a className="header-contact" href="#contact">Обсудить проект <span aria-hidden="true">↗</span></a>
-        <button className={`menu-button${open ? " is-open" : ""}`} type="button" aria-label={open ? "Закрыть меню" : "Открыть меню"} aria-expanded={open} onClick={() => setOpen(!open)}>
+        <LanguageSwitcher locale={locale} label={copy.languageLabel} switchTo={copy.switchTo} />
+        <Link className="header-contact" href="/#contact">{copy.cta} <span aria-hidden="true">↗</span></Link>
+        <button className={`menu-button${open ? " is-open" : ""}`} type="button" aria-label={open ? copy.closeMenu : copy.openMenu} aria-expanded={open} onClick={() => setOpen(!open)}>
           <span /><span />
         </button>
       </Container>
-      <MobileMenu open={open} onNavigate={() => setOpen(false)} />
+      <MobileMenu open={open} onNavigate={() => setOpen(false)} links={copy.nav} cta={copy.cta} navLabel={copy.mobileNavLabel} />
     </header>
   );
 }

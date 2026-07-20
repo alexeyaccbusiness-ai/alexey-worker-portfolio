@@ -4,24 +4,39 @@ import { Button } from "./Button";
 import { Container } from "./Container";
 import { SystemVisual } from "./SystemVisual";
 
-export function Hero() {
+type HeroProps = {
+  copy: {
+    badge: string;
+    titleStart: string;
+    titleAccent: string;
+    titleEnd: string;
+    description: string;
+    primary: string;
+    secondary: string;
+    rail: string;
+    location: string;
+    system: Parameters<typeof SystemVisual>[0]["copy"];
+  };
+};
+
+export function Hero({ copy }: HeroProps) {
   return (
     <section className="hero" id="top">
       <AnimatedBackground />
       <Container className="hero__inner">
         <div className="hero__copy">
-          <Badge>Digital product developer</Badge>
-          <h1>Создаю цифровые продукты, которые <em>выполняют работу</em>, а не просто выглядят красиво.</h1>
-          <p>Сайты, Telegram-боты, AI-инструменты и автоматизация бизнес-процессов — от идеи до готовой работающей системы.</p>
+          <Badge>{copy.badge}</Badge>
+          <h1>{copy.titleStart}<em>{copy.titleAccent}</em>{copy.titleEnd}</h1>
+          <p>{copy.description}</p>
           <div className="hero__actions">
-            <Button href="#contact">Обсудить проект</Button>
-            <Button href="#projects" variant="secondary">Смотреть работы</Button>
+            <Button href="#contact">{copy.primary}</Button>
+            <Button href="#projects" variant="secondary">{copy.secondary}</Button>
           </div>
         </div>
-        <SystemVisual />
-        <div className="hero__rail" aria-label="Направления работы">
-          <span>WEB / TELEGRAM / AI / AUTOMATION</span>
-          <span>GERMANY · РАБОТАЮ УДАЛЁННО</span>
+        <SystemVisual copy={copy.system} />
+        <div className="hero__rail">
+          <span>{copy.rail}</span>
+          <span>{copy.location}</span>
         </div>
       </Container>
     </section>

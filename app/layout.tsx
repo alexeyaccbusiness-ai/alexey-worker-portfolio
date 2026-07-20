@@ -1,20 +1,25 @@
 import type { Metadata, Viewport } from "next";
+import { getTranslations } from "@/lib/content";
+import { getRequestLocale } from "@/lib/request-locale";
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: "Alexey Worker — цифровые продукты и автоматизация",
-  description: "Сайты, Telegram-продукты, AI-инструменты, интеграции и автоматизация бизнес-процессов — от идеи до работающей системы.",
-  keywords: ["веб-разработка", "Telegram Mini App", "автоматизация", "AI-агенты", "цифровые продукты"],
-  openGraph: {
-    title: "Alexey Worker — цифровые продукты, которые выполняют работу",
-    description: "Разработка сайтов, Telegram-продуктов, AI-инструментов и автоматизации для бизнеса.",
-    type: "website",
-    locale: "ru_RU",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale();
+  const { meta } = getTranslations(locale);
+
+  return {
+    title: meta.title,
+    description: meta.description,
+    keywords: locale === "ru"
+      ? ["веб-разработка", "Telegram Mini App", "автоматизация", "AI-агенты", "цифровые продукты"]
+      : ["web development", "Telegram Mini App", "automation", "AI agents", "digital products"],
+    openGraph: { title: meta.ogTitle, description: meta.ogDescription, type: "website", locale: meta.locale },
+  };
+}
 
 export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: "#101011" };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="ru"><body>{children}</body></html>;
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const locale = await getRequestLocale();
+  return <html lang={locale} suppressHydrationWarning><body>{children}</body></html>;
 }

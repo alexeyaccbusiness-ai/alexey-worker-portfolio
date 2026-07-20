@@ -1,17 +1,23 @@
-type MobileMenuProps = { open: boolean; onNavigate: () => void };
+import Link from "next/link";
 
-const links = [["Услуги", "#services"], ["Работы", "#projects"], ["Процесс", "#process"], ["Обо мне", "#about"]];
+type MobileMenuProps = {
+  open: boolean;
+  onNavigate: () => void;
+  links: readonly (readonly [string, string])[];
+  cta: string;
+  navLabel: string;
+};
 
-export function MobileMenu({ open, onNavigate }: MobileMenuProps) {
+export function MobileMenu({ open, onNavigate, links, cta, navLabel }: MobileMenuProps) {
   return (
     <div className={`mobile-menu${open ? " is-open" : ""}`} aria-hidden={!open}>
-      <nav aria-label="Мобильная навигация">
+      <nav aria-label={navLabel}>
         {links.map(([label, href], index) => (
-          <a key={href} href={href} onClick={onNavigate} tabIndex={open ? 0 : -1}>
+          <Link key={href} href={href} onClick={onNavigate} tabIndex={open ? 0 : -1}>
             <span>0{index + 1}</span>{label}
-          </a>
+          </Link>
         ))}
-        <a className="mobile-menu__cta" href="#contact" onClick={onNavigate} tabIndex={open ? 0 : -1}>Обсудить проект</a>
+        <Link className="mobile-menu__cta" href="/#contact" onClick={onNavigate} tabIndex={open ? 0 : -1}>{cta}</Link>
       </nav>
     </div>
   );
